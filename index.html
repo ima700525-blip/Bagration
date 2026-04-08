@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>«Багратион» - шедевр военной стратегии</title>
+    <title>Операция «Багратион» - подлинный шедевр военной стратегии</title>
     <!-- Шрифты: машинописный Special Elite, рукописный Caveat, основной PT Sans (замените на свои по инструкции) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -726,6 +726,224 @@
             </div>
             <p class="typewriter" style="text-align: center; margin-bottom: 30px;">Приятного просмотра!</p>
         </section>
+
+<!-- НАЧАЛО БЛИЦ-ОПРОСА -->
+<section id="quiz-section" class="fade-in section-spacer">
+    <h2>Блиц-опрос: проверь свои знания</h2>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h2>⚡ БЛИЦ-ОПРОС ⚡</h2>
+            <p class="typewriter">Операция «Багратион» — правда или нет?</p>
+        </div>
+        <div class="quiz-body" id="quizBody">
+            <!-- сюда динамически подставляются вопросы -->
+        </div>
+        <div class="footer-note typewriter" style="text-align: center; font-size: 0.9rem; margin-top: 10px;">
+            ★ Проверь свои знания о крупнейшей наступательной операции 1944 года ★
+        </div>
+    </div>
+</section>
+
+<style>
+    .quiz-container {
+        background: rgba(255,255,240,0.7);
+        border: 2px solid #7a5a3a;
+        border-radius: 15px;
+        box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin: 30px 0;
+    }
+    .quiz-header {
+        background: #2c1e0e;
+        color: #f4e9d8;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 3px solid #a1251b;
+    }
+    .quiz-header h2 {
+        font-family: 'Special Elite', cursive;
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+        color: #f4e9d8;
+        border-bottom: none;
+    }
+    .quiz-header p {
+        font-family: 'PT Sans', sans-serif;
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+    .quiz-body {
+        padding: 30px 25px;
+        background: #faf9f6;
+    }
+    .question-area {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .progress {
+        font-family: 'Special Elite', cursive;
+        font-size: 1rem;
+        color: #2c1e0e;
+        background: #e9ecef;
+        display: inline-block;
+        padding: 6px 18px;
+        border-radius: 30px;
+        margin-bottom: 20px;
+        border: 1px solid #7a5a3a;
+    }
+    .question-text {
+        font-family: 'Special Elite', cursive;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #3e2c1a;
+        background: #fff;
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid #7a5a3a;
+        margin: 20px 0;
+    }
+    .answer-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    .btn-yes, .btn-no, .btn-restart, .btn-cert {
+        background: #a1251b;
+        border: none;
+        color: #f4e9d8;
+        font-family: 'Special Elite', cursive;
+        font-size: 1.2rem;
+        padding: 12px 25px;
+        cursor: pointer;
+        border-bottom: 3px solid #5e2b1a;
+        text-transform: uppercase;
+        box-shadow: 2px 2px 0 #2c1e0e;
+    }
+    .btn-yes:hover, .btn-no:hover, .btn-restart:hover, .btn-cert:hover {
+        background: #7e1e15;
+    }
+    .result-box {
+        background: #dac8b0;
+        border-radius: 15px;
+        padding: 30px;
+        border: 2px solid #7a5a3a;
+        margin-bottom: 20px;
+    }
+    .result-score {
+        font-family: 'Special Elite', cursive;
+        font-size: 3rem;
+        color: #3e2c1a;
+        margin: 15px 0;
+    }
+    .certificate-section {
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 2px dashed #7a5a3a;
+    }
+    .input-field {
+        width: 100%;
+        padding: 12px;
+        font-family: 'Special Elite', cursive;
+        border: 2px solid #7a5a3a;
+        background: #f4e9d8;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    @media (max-width: 700px) {
+        .quiz-body { padding: 20px; }
+        .question-text { font-size: 1.3rem; }
+        .btn-yes, .btn-no, .btn-restart, .btn-cert { font-size: 1rem; padding: 10px 20px; }
+    }
+</style>
+
+<script>
+    (function() {
+        const questions = [
+            { text: "Операция «Багратион» началась летом 1944 года?", answer: true },
+            { text: "Операция названа в честь грузинского князя Петра Багратиона?", answer: true },
+            { text: "Главный удар наносился в направлении Москвы?", answer: false },
+            { text: "В результате операции была полностью освобождена Белорусская ССР?", answer: true },
+            { text: "Операция завершилась только к декабрю 1944 года?", answer: false }
+        ];
+        const total = questions.length;
+        let current = 0, correct = 0, finished = false;
+        const quizBody = document.getElementById('quizBody');
+
+        function render() {
+            if (!finished) {
+                const q = questions[current];
+                quizBody.innerHTML = `
+                    <div class="question-area">
+                        <div class="progress">Вопрос ${current+1} из ${total}</div>
+                        <div class="question-text">${q.text}</div>
+                        <div class="answer-buttons">
+                            <button class="btn-yes" id="answerYes">ДА</button>
+                            <button class="btn-no" id="answerNo">НЕТ</button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('answerYes').onclick = () => handle(true);
+                document.getElementById('answerNo').onclick = () => handle(false);
+            } else {
+                let msg = correct === total ? 'Блестяще!' : (correct >= total/2 ? 'Неплохо!' : 'Стоит повторить');
+                quizBody.innerHTML = `
+                    <div class="result-area">
+                        <div class="result-box">
+                            <div class="result-score">${correct} / ${total}</div>
+                            <div class="result-message">${msg}</div>
+                            <button class="btn-restart" id="restartQuiz">Пройти ещё раз</button>
+                        </div>
+                        <div class="certificate-section">
+                            <h3>🎖 ПОЛУЧИТЕ ГРАМОТУ</h3>
+                            <input type="text" id="fullName" class="input-field" placeholder="Ваше имя">
+                            <button class="btn-cert" id="downloadCert">📜 Скачать</button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('restartQuiz').onclick = restart;
+                document.getElementById('downloadCert').onclick = () => {
+                    let name = document.getElementById('fullName').value.trim();
+                    if (!name) { alert('Введите имя'); return; }
+                    generateCert(name, correct, total);
+                };
+            }
+        }
+
+        function handle(choice) {
+            if (choice === questions[current].answer) correct++;
+            if (++current < total) render();
+            else { finished = true; render(); }
+        }
+        function restart() { current = 0; correct = 0; finished = false; render(); }
+
+        function generateCert(name, score, total) {
+            const c = document.createElement('canvas');
+            c.width = 800; c.height = 600;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#fdf8f0'; ctx.fillRect(0, 0, 800, 600);
+            ctx.strokeStyle = '#7a5a3a'; ctx.lineWidth = 15; ctx.strokeRect(20, 20, 760, 560);
+            ctx.strokeStyle = '#a1251b'; ctx.lineWidth = 4; ctx.strokeRect(45, 45, 710, 510);
+            ctx.fillStyle = '#2c1e0e'; ctx.font = 'bold 48px "Special Elite"'; ctx.textAlign = 'center';
+            ctx.fillText('ГРАМОТА', 400, 130);
+            ctx.font = '28px "PT Sans"'; ctx.fillText('НАГРАЖДАЕТСЯ', 400, 220);
+            ctx.font = 'bold 42px "Special Elite"'; ctx.fillText(name, 400, 300);
+            ctx.font = '26px "PT Sans"'; ctx.fillText('за успешное прохождение блиц-опроса', 400, 380);
+            ctx.font = 'bold 30px "Special Elite"'; ctx.fillText('«ОПЕРАЦИЯ БАГРАТИОН»', 400, 440);
+            ctx.fillStyle = '#a1251b'; ctx.font = 'bold 36px "Special Elite"';
+            ctx.fillText(`${score} / ${total} правильных ответов`, 400, 510);
+            ctx.fillStyle = '#5c5c5c'; ctx.font = '20px "PT Sans"';
+            ctx.fillText(new Date().toLocaleDateString('ru-RU'), 400, 550);
+            const link = document.createElement('a');
+            link.download = `грамота_${name.replace(/\s/g,'_')}.png`;
+            link.href = c.toDataURL();
+            link.click();
+        }
+        render();
+    })();
+</script>
+<!-- КОНЕЦ БЛИЦ-ОПРОСА -->
+        
         
         <!-- Книги (новый раздел) -->
         <section id="books" class="fade-in section-spacer">
